@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GLOSARIO IA // SISTEMA DIGITAL</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Exo+2:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #03050f;
+  --bg2: #060a1a;
+  --surface: #0a0e22;
+  --surface2: #0f1530;
+  --border: #1a2550;
+  --cyan: #00f5ff;
+  --cyan2: #00c8d4;
+  --magenta: #ff00aa;
+  --magenta2: #cc0088;
+  --green: #00ff88;
+  --green2: #00cc66;
+  --yellow: #ffcc00;
+  --text: #c8d8f0;
+  --muted: #4a5880;
+  --dim: #1e2848;
+  --tag-agent: rgba(0,245,255,0.1);
+  --tag-tool: rgba(255,0,170,0.1);
+  --tag-concept: rgba(0,255,136,0.1);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Exo 2', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── GRID BACKGROUND ── */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0;
+  background-image:
+    linear-gradient(rgba(0,245,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,245,255,0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+}
+
+/* ── SCANLINES ── */
+body::after {
+  content: '';
+  position: fixed; inset: 0; z-index: 998;
+  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.08) 2px, rgba(0,0,0,0.08) 4px);
+  pointer-events: none;
+}
+
+/* ── HERO ── */
+.hero {
+  position: relative;
+  z-index: 1;
+  padding: 60px 48px 50px;
+  border-bottom: 1px solid var(--border);
+  overflow: hidden;
+}
+
+/* Animated corner brackets */
+.hero::before, .hero::after {
+  content: '';
+  position: absolute;
+  width: 60px; height: 60px;
+  border-color: var(--cyan);
+  border-style: solid;
+  opacity: 0.5;
+}
+.hero::before { top: 20px; left: 20px; border-width: 2px 0 0 2px; }
+.hero::after  { bottom: 20px; right: 20px; border-width: 0 2px 2px 0; }
+
+.hero-glow {
+  position: absolute;
+  top: -120px; left: 50%;
+  transform: translateX(-50%);
+  width: 600px; height: 300px;
+  background: radial-gradient(ellipse, rgba(0,245,255,0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-glow2 {
+  position: absolute;
+  top: 0; right: -100px;
+  width: 400px; height: 400px;
+  background: radial-gradient(ellipse, rgba(255,0,170,0.04) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero-inner { position: relative; max-width: 1100px; margin: 0 auto; }
+
+.system-label {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  color: var(--cyan);
+  letter-spacing: 0.2em;
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.system-label::before {
+  content: '▶';
+  color: var(--magenta);
+  animation: blink 1.2s step-end infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+.hero h1 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(28px, 5.5vw, 68px);
+  font-weight: 900;
+  line-height: 1.0;
+  margin-bottom: 10px;
+  position: relative;
+}
+.hero h1 .line1 {
+  color: var(--cyan);
+  text-shadow: 0 0 30px rgba(0,245,255,0.5), 0 0 60px rgba(0,245,255,0.2);
+  display: block;
+}
+.hero h1 .line2 {
+  color: #fff;
+  display: block;
+  font-size: 0.65em;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  margin-top: 8px;
+  opacity: 0.7;
+}
+
+/* Glitch effect on h1 */
+.hero h1::after {
+  content: 'GLOSARIO';
+  position: absolute;
+  top: 0; left: 0;
+  color: var(--magenta);
+  clip-path: polygon(0 30%, 100% 30%, 100% 50%, 0 50%);
+  opacity: 0;
+  animation: glitch 6s infinite;
+  text-shadow: none;
+  pointer-events: none;
+}
+@keyframes glitch {
+  0%,94%,100% { opacity:0; transform:none; }
+  95% { opacity:0.6; transform:translateX(-3px); }
+  96% { opacity:0.4; transform:translateX(3px); }
+  97% { opacity:0; }
+  98% { opacity:0.3; transform:translateX(-2px); }
+}
+
+.hero-stats {
+  display: flex;
+  gap: 32px;
+  margin-top: 28px;
+  flex-wrap: wrap;
+}
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.stat-val {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--cyan);
+  text-shadow: 0 0 15px rgba(0,245,255,0.4);
+}
+.stat-lbl {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.stat-div { width: 1px; background: var(--border); align-self: stretch; }
+
+/* ── CONTROLS ── */
+.controls {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(3,5,15,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 48px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.controls::before {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+  opacity: 0.3;
+}
+
+.search-wrap {
+  position: relative;
+  flex: 1;
+  min-width: 200px;
+  max-width: 320px;
+}
+.search-icon {
+  position: absolute;
+  left: 12px; top: 50%;
+  transform: translateY(-50%);
+  color: var(--cyan);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 14px;
+  pointer-events: none;
+}
+.search-input {
+  width: 100%;
+  padding: 9px 14px 9px 36px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 13px;
+  color: var(--cyan);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  caret-color: var(--cyan);
+}
+.search-input:focus {
+  border-color: var(--cyan);
+  box-shadow: 0 0 0 2px rgba(0,245,255,0.1), 0 0 15px rgba(0,245,255,0.08);
+}
+.search-input::placeholder { color: var(--muted); }
+
+.filter-btns { display: flex; gap: 6px; flex-wrap: wrap; }
+.filter-btn {
+  padding: 6px 14px;
+  border-radius: 3px;
+  border: 1px solid var(--border);
+  background: transparent;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.15s;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.filter-btn:hover { color: var(--cyan); border-color: var(--cyan); }
+.filter-btn.active.f-all { color: var(--cyan); border-color: var(--cyan); background: rgba(0,245,255,0.07); box-shadow: 0 0 10px rgba(0,245,255,0.1); }
+.filter-btn.active.f-agente { color: var(--cyan); border-color: var(--cyan); background: rgba(0,245,255,0.07); }
+.filter-btn.active.f-herramienta { color: var(--magenta); border-color: var(--magenta); background: rgba(255,0,170,0.07); }
+.filter-btn.active.f-concepto { color: var(--green); border-color: var(--green); background: rgba(0,255,136,0.07); }
+
+.count-badge {
+  margin-left: auto;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.08em;
+}
+.count-badge strong { color: var(--cyan); }
+
+/* ── LAYOUT ── */
+.main-layout {
+  position: relative; z-index: 1;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 40px 48px 80px;
+  display: grid;
+  grid-template-columns: 1fr 220px;
+  gap: 40px;
+  align-items: start;
+}
+@media (max-width: 820px) {
+  .main-layout { grid-template-columns: 1fr; padding: 24px 20px 60px; }
+  .controls { padding: 12px 20px; }
+  .hero { padding: 40px 20px 36px; }
+  .sidebar { display: none; }
+}
+
+/* ── ENTRY CARD ── */
+.entry {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  margin-bottom: 12px;
+  padding: 22px 24px;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+  animation: slideIn 0.4s ease both;
+  overflow: hidden;
+}
+.entry::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 3px; height: 100%;
+  background: var(--cyan);
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+.entry.cat-herramienta::before { background: var(--magenta); }
+.entry.cat-concepto::before { background: var(--green); }
+
+.entry:hover {
+  border-color: var(--cyan);
+  box-shadow: 0 0 20px rgba(0,245,255,0.07), inset 0 0 30px rgba(0,245,255,0.02);
+  transform: translateX(2px);
+}
+.entry.cat-herramienta:hover { border-color: var(--magenta); box-shadow: 0 0 20px rgba(255,0,170,0.07); }
+.entry.cat-concepto:hover { border-color: var(--green); box-shadow: 0 0 20px rgba(0,255,136,0.07); }
+.entry:hover::before { opacity: 1; }
+
+.entry.hidden { display: none; }
+
+@keyframes slideIn {
+  from { opacity:0; transform: translateX(-10px); }
+  to   { opacity:1; transform: translateX(0); }
+}
+
+/* corner deco */
+.entry-corner {
+  position: absolute;
+  top: 10px; right: 10px;
+  width: 16px; height: 16px;
+  border-top: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  opacity: 0.5;
+}
+.entry:hover .entry-corner { border-color: var(--cyan); opacity: 1; }
+.entry.cat-herramienta:hover .entry-corner { border-color: var(--magenta); }
+.entry.cat-concepto:hover .entry-corner { border-color: var(--green); }
+
+.entry-top {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+.entry-num {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.08em;
+  flex-shrink: 0;
+}
+.entry-term {
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(14px, 2.5vw, 18px);
+  font-weight: 700;
+  color: var(--cyan);
+  text-shadow: 0 0 20px rgba(0,245,255,0.3);
+  flex: 1;
+  line-height: 1.3;
+}
+.cat-herramienta .entry-term { color: var(--magenta); text-shadow: 0 0 20px rgba(255,0,170,0.3); }
+.cat-concepto   .entry-term { color: var(--green);   text-shadow: 0 0 20px rgba(0,255,136,0.3); }
+
+.entry-tag {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 2px;
+  flex-shrink: 0;
+  border: 1px solid;
+}
+.tag-agente     { background: var(--tag-agent);   color: var(--cyan);    border-color: rgba(0,245,255,0.3); }
+.tag-herramienta{ background: var(--tag-tool);    color: var(--magenta); border-color: rgba(255,0,170,0.3); }
+.tag-concepto   { background: var(--tag-concept); color: var(--green);   border-color: rgba(0,255,136,0.3); }
+
+.entry-separator {
+  height: 1px;
+  background: linear-gradient(90deg, var(--border), transparent);
+  margin-bottom: 12px;
+}
+
+.entry-def {
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.75;
+  color: var(--text);
+}
+.entry-def strong { font-weight: 500; color: #fff; }
+
+.entry-expand {
+  display: none;
+  margin-top: 14px;
+  padding: 12px 16px;
+  background: rgba(0,0,0,0.3);
+  border: 1px solid var(--dim);
+  border-radius: 2px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.7;
+  letter-spacing: 0.02em;
+}
+.entry-expand::before {
+  content: '> ';
+  color: var(--cyan);
+}
+.cat-herramienta .entry-expand::before { color: var(--magenta); }
+.cat-concepto    .entry-expand::before { color: var(--green); }
+.entry.open .entry-expand { display: block; }
+
+.entry-btn {
+  margin-top: 12px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  letter-spacing: 0.08em;
+  padding: 4px 0;
+  transition: color 0.15s;
+}
+.entry-btn:hover { color: var(--cyan); }
+.cat-herramienta .entry-btn:hover { color: var(--magenta); }
+.cat-concepto    .entry-btn:hover { color: var(--green); }
+.entry-btn-arrow { transition: transform 0.2s; }
+.entry.open .entry-btn-arrow { transform: rotate(90deg); }
+
+/* ── SIDEBAR ── */
+.sidebar { position: sticky; top: 72px; }
+
+.s-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 16px;
+  margin-bottom: 14px;
+  position: relative;
+  overflow: hidden;
+}
+.s-panel::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+  opacity: 0.3;
+}
+
+.s-title {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.s-title::before { content: '//'; color: var(--muted); }
+
+.toc-list { list-style: none; }
+.toc-list li {
+  border-bottom: 1px solid rgba(26,37,80,0.6);
+  padding: 5px 0;
+}
+.toc-list a {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  text-decoration: none;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  transition: color 0.15s;
+  letter-spacing: 0.03em;
+}
+.toc-list a:hover { color: var(--cyan); }
+.toc-num { opacity: 0.4; font-size: 10px; }
+
+.legend-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+}
+.l-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  flex-shrink: 0;
+  box-shadow: 0 0 6px currentColor;
+}
+
+/* status indicator */
+.status-bar {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 0 0;
+}
+.status-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 8px var(--green);
+  animation: statusPulse 2s ease-in-out infinite;
+}
+@keyframes statusPulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+/* ── EMPTY ── */
+.empty-state { display:none; text-align:center; padding:60px 20px; }
+.empty-state.show { display:block; }
+.empty-icon {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 30px;
+  color: var(--muted);
+  margin-bottom: 16px;
+}
+.empty-text {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 13px;
+  color: var(--muted);
+  letter-spacing: 0.06em;
+}
+
+/* ── FOOTER ── */
+footer {
+  position: relative; z-index: 1;
+  border-top: 1px solid var(--border);
+  padding: 24px 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  flex-wrap: wrap;
+  gap: 12px;
+}
+footer::before {
+  content: '';
+  position: absolute; top:0; left:0; right:0; height:1px;
+  background: linear-gradient(90deg, transparent, var(--cyan), var(--magenta), transparent);
+  opacity: 0.2;
+}
+footer span { color: var(--cyan); }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-glow2"></div>
+  <div class="hero-inner">
+    <div class="system-label">SYS:GLOSSARY // v2.0.1 // LOADED</div>
+    <h1>
+      <span class="line1">GLOSARIO</span>
+      <span class="line2">INTELIGENCIA ARTIFICIAL &amp; HERRAMIENTAS DIGITALES</span>
+    </h1>
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-val" id="stat-total">14</div>
+        <div class="stat-lbl">términos</div>
+      </div>
+      <div class="stat-div"></div>
+      <div class="stat">
+        <div class="stat-val">03</div>
+        <div class="stat-lbl">categorías</div>
+      </div>
+      <div class="stat-div"></div>
+      <div class="stat">
+        <div class="stat-val" style="color:var(--green)">v1.0</div>
+        <div class="stat-lbl">edición</div>
+      </div>
+      <div class="stat-div"></div>
+      <div class="stat">
+        <div class="stat-val" style="color:var(--magenta)">ACTIVO</div>
+        <div class="stat-lbl">estado</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTROLS -->
+<div class="controls">
+  <div class="search-wrap">
+    <span class="search-icon">⌕</span>
+    <input class="search-input" id="search" type="text" placeholder="buscar_término..." oninput="filterEntries()">
+  </div>
+  <div class="filter-btns">
+    <button class="filter-btn f-all active" onclick="setFilter('all',this)">[ ALL ]</button>
+    <button class="filter-btn f-agente"      onclick="setFilter('agente',this)">AGENTE</button>
+    <button class="filter-btn f-herramienta" onclick="setFilter('herramienta',this)">TOOL</button>
+    <button class="filter-btn f-concepto"    onclick="setFilter('concepto',this)">CONCEPT</button>
+  </div>
+  <div class="count-badge">RESULTS: <strong id="visible-count">14</strong></div>
+</div>
+
+<!-- MAIN -->
+<div class="main-layout">
+  <div>
+    <div id="entries-list"></div>
+    <div class="empty-state" id="empty-state">
+      <div class="empty-icon">[ 404 ]</div>
+      <div class="empty-text">NO_MATCH_FOUND // QUERY: "<span id="search-q"></span>"</div>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="s-panel">
+      <div class="s-title">Índice</div>
+      <ul class="toc-list" id="toc"></ul>
+    </div>
+    <div class="s-panel">
+      <div class="s-title">Categorías</div>
+      <div class="legend-row"><div class="l-dot" style="color:var(--cyan);background:var(--cyan)"></div>Agente / Sistema</div>
+      <div class="legend-row"><div class="l-dot" style="color:var(--magenta);background:var(--magenta)"></div>Herramienta</div>
+      <div class="legend-row"><div class="l-dot" style="color:var(--green);background:var(--green)"></div>Concepto</div>
+      <div class="status-bar"><div class="status-dot"></div>SISTEMA OPERATIVO</div>
+    </div>
+  </aside>
+</div>
+
+<footer>
+  <span>// GLOSARIO_IA.SYS</span>
+  <span>IA · Automatización · Gestión Digital</span>
+  <span>BUILD_2025 // ALL_RIGHTS_RESERVED</span>
+</footer>
+
+<script>
+const terms = [
+  { num:1, term:'Agente', cat:'agente',
+    def:'Programa <strong>autónomo</strong> que percibe su entorno, toma decisiones y ejecuta tareas de forma independiente para cumplir un objetivo definido.',
+    extra:'Un agente puede ser tan simple como un script que monitorea correos, o tan complejo como un sistema que navega la web y aprende de sus resultados. La clave: actúa sin intervención humana constante.' },
+  { num:2, term:'Multiagente', cat:'agente',
+    def:'Sistema compuesto por <strong>varios agentes especializados</strong> que colaboran entre sí para resolver problemas complejos que un solo agente no podría manejar eficientemente.',
+    extra:'Ejemplo: un sistema multiagente para atención al cliente puede tener un agente que clasifica consultas, otro que busca en base de datos y otro que redacta respuestas — todos coordinados en tiempo real.' },
+  { num:3, term:'¿Para qué sirve un Multiagente?', cat:'concepto',
+    def:'Permite <strong>dividir tareas complejas</strong> en subtareas especializadas, coordinar agentes en paralelo y lograr mayor eficiencia, escalabilidad y precisión que con un único sistema centralizado.',
+    extra:'Aplicaciones: finanzas (trading automatizado), logística (rutas), salud (diagnóstico asistido), automatización empresarial. Escalan horizontalmente añadiendo más agentes.' },
+  { num:4, term:'Droid', cat:'agente',
+    def:'Robot o software <strong>automatizado</strong> diseñado para ejecutar funciones específicas de forma eficiente, siguiendo flujos de trabajo predefinidos sin necesidad de comprensión semántica.',
+    extra:'A diferencia de un modelo de lenguaje, un Droid sigue reglas fijas. Es ideal para tareas estructuradas: procesamiento de formularios, envío de notificaciones, integración entre sistemas.' },
+  { num:5, term:'Fake Bot', cat:'concepto',
+    def:'Bot simulado que <strong>imita comportamientos</strong> humanos o de otros sistemas para pruebas internas controladas, validación de flujos y desarrollo sin riesgo en producción.',
+    extra:'Los fake bots son fundamentales en el desarrollo de chatbots: permiten probar la lógica del sistema antes de conectar el servicio real. También se usan para load testing y simulación de escenarios.' },
+  { num:6, term:'¿Para qué sirve crear un repositorio?', cat:'concepto',
+    def:'Un repositorio permite <strong>almacenar, versionar y colaborar</strong> sobre código y documentación, manteniendo el historial completo de cambios con capacidad de rollback.',
+    extra:'Ventajas: rollback ante errores, colaboración simultánea de equipos distribuidos, integración con CI/CD, documentación viva, auditoría de cambios y control de accesos granular.' },
+  { num:7, term:'GitHub', cat:'herramienta',
+    def:'Plataforma líder para <strong>alojar repositorios Git</strong>, colaborar en código, gestionar versiones y automatizar pipelines de desarrollo mediante GitHub Actions.',
+    extra:'100M+ desarrolladores. Ofrece: repositorios públicos gratuitos, GitHub Copilot (IA para código), GitHub Pages para hosting, Actions para CI/CD y Projects para gestión ágil.' },
+  { num:8, term:'¿Cómo funciona GitHub?', cat:'concepto',
+    def:'Usa el sistema <strong>Git</strong> para registrar cada cambio (commits), ramificar el proyecto (branches), revisar código (pull requests) y fusionar contribuciones de forma controlada.',
+    extra:'Flujo estándar: fork → branch → commit → push → pull request → code review → merge → deploy. Todo el historial queda inmutable y cualquier estado es restaurable.' },
+  { num:9, term:'Claude vs Droid', cat:'concepto',
+    def:'<strong>Claude</strong> comprende contexto, genera contenido creativo y razona sobre problemas complejos. Un <strong>Droid</strong> ejecuta tareas automatizadas predefinidas sin comprensión semántica del contenido.',
+    extra:'Claude puede escribir un email adaptado al tono del destinatario; un Droid puede enviarlo automáticamente a mil personas. Combinados forman sistemas de automatización inteligente de alta eficiencia.' },
+  { num:10, term:'Open Cloud', cat:'herramienta',
+    def:'Plataforma de infraestructura abierta que permite <strong>gestionar recursos, servicios y datos</strong> en la nube sin dependencia de un único proveedor (anti vendor lock-in).',
+    extra:'Ejemplos: OpenStack, arquitecturas multi-cloud, Kubernetes en cualquier proveedor. El enfoque open reduce costos, mejora la portabilidad y permite negociar mejores condiciones con proveedores.' },
+  { num:11, term:'Sesión Ollama', cat:'herramienta',
+    def:'<strong>Ollama</strong> ejecuta modelos de lenguaje localmente. Una sesión es la interacción temporal donde el modelo procesa consultas manteniendo el contexto de la conversación en memoria.',
+    extra:'Permite correr Llama, Mistral, Gemma y otros modelos directamente en tu hardware, sin enviar datos a servidores externos. Ideal para privacidad, entornos offline y prototipado rápido.' },
+  { num:12, term:'Sistema Predictivo de Agentes', cat:'agente',
+    def:'Conjunto de agentes que <strong>analizan datos históricos y en tiempo real</strong> para anticipar eventos futuros, detectar patrones ocultos y recomendar acciones proactivas.',
+    extra:'Casos de uso: predicción de churn de clientes, mantenimiento predictivo industrial, detección de fraude, optimización dinámica de inventarios, predicción de demanda en logística.' },
+  { num:13, term:'Capacitación con Agentes', cat:'concepto',
+    def:'Metodología para <strong>entrenar personas</strong> mediante simulaciones personalizadas, escenarios adaptativos y retroalimentación inmediata generados por agentes de IA en tiempo real.',
+    extra:'Un agente puede simular clientes difíciles para entrenar vendedores, o actuar como paciente virtual para médicos, generando infinitos escenarios adaptados al nivel y progreso del aprendiz.' },
+  { num:14, term:'Skill', cat:'concepto',
+    def:'Capacidad <strong>modular y específica</strong> que se otorga a un agente o modelo de IA para ejecutar una tarea determinada: buscar en la web, leer archivos, enviar mensajes o llamar APIs.',
+    extra:'En Claude, las skills extienden las capacidades base del modelo con herramientas externas. Son el equivalente a "plugins" que amplían lo que el agente puede hacer dentro de un sistema más amplio.' }
+];
+
+let activeFilter = 'all';
+
+function build() {
+  const list = document.getElementById('entries-list');
+  const toc  = document.getElementById('toc');
+  list.innerHTML = ''; toc.innerHTML = '';
+  const tagLabels = { agente:'AGENTE', herramienta:'TOOL', concepto:'CONCEPT' };
+
+  terms.forEach((t, i) => {
+    const entry = document.createElement('div');
+    entry.className = `entry cat-${t.cat}`;
+    entry.id = 'e' + t.num;
+    entry.dataset.term = t.term.toLowerCase();
+    entry.dataset.cat  = t.cat;
+    entry.dataset.def  = t.def.toLowerCase().replace(/<[^>]*>/g,'');
+    entry.style.animationDelay = (i * 0.04) + 's';
+
+    entry.innerHTML = `
+      <div class="entry-corner"></div>
+      <div class="entry-top">
+        <span class="entry-num">[ ${String(t.num).padStart(2,'0')} ]</span>
+        <span class="entry-term">${t.term}</span>
+        <span class="entry-tag tag-${t.cat}">${tagLabels[t.cat]}</span>
+      </div>
+      <div class="entry-separator"></div>
+      <div class="entry-def">${t.def}</div>
+      ${t.extra ? `
+      <div class="entry-expand">${t.extra}</div>
+      <button class="entry-btn" onclick="toggle(${t.num})">
+        <span class="entry-btn-arrow">▶</span> MORE_INFO
+      </button>` : ''}`;
+    list.appendChild(entry);
+
+    const li = document.createElement('li');
+    li.innerHTML = `<a href="#e${t.num}"><span class="toc-num">${String(t.num).padStart(2,'0')}</span>${t.term}</a>`;
+    toc.appendChild(li);
+  });
+}
+
+function toggle(n) {
+  const el  = document.getElementById('e' + n);
+  const btn = el.querySelector('.entry-btn');
+  el.classList.toggle('open');
+  const isOpen = el.classList.contains('open');
+  btn.innerHTML = `<span class="entry-btn-arrow" style="transform:rotate(${isOpen?90:0}deg);display:inline-block;transition:transform .2s">▶</span> ${isOpen ? 'CLOSE' : 'MORE_INFO'}`;
+}
+
+function setFilter(cat, btn) {
+  activeFilter = cat;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  filterEntries();
+}
+
+function filterEntries() {
+  const q = document.getElementById('search').value.toLowerCase().trim();
+  document.getElementById('search-q').textContent = q;
+  let count = 0;
+  document.querySelectorAll('.entry').forEach(el => {
+    const okCat = activeFilter === 'all' || el.dataset.cat === activeFilter;
+    const okQ   = !q || el.dataset.term.includes(q) || el.dataset.def.includes(q);
+    const show  = okCat && okQ;
+    el.classList.toggle('hidden', !show);
+    if (show) count++;
+  });
+  document.getElementById('visible-count').textContent = count;
+  document.getElementById('stat-total').textContent    = count;
+  document.getElementById('empty-state').classList.toggle('show', count === 0);
+}
+
+build();
+</script>
+</body>
+</html>
